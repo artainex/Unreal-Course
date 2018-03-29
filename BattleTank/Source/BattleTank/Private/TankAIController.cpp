@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
+#include "Tank.h"
 #include "Engine/World.h"
 #include "BattleTank.h" 
 
@@ -27,7 +28,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 		// Aim towards the player 
 		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
-
 
 		// Fire if ready
 		//UE_LOG(LogTemp, Warning, TEXT("Player Controller ticking"));
