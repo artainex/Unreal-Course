@@ -8,6 +8,7 @@
 
 // Forward Declaration
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -17,11 +18,18 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank * GetControlledTank() const;
+
+	// Don't need to be implemented in .cpp file.
+	// Can do that from the blueprint.
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
+
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
-	ATank * GetControlledTank() const;	
 
 	// Start the tank moving barrel so that a shot would it where
 	// the crosshair intersects the world
