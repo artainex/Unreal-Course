@@ -7,7 +7,6 @@
 #include "TankPlayerController.generated.h" // Must be the last include
 
 // Forward Declaration
-class ATank;
 class UTankAimingComponent;
 
 /**
@@ -19,9 +18,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank * GetControlledTank() const;
-
 	// Don't need to be implemented in .cpp file.
 	// Can do that from the blueprint.
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
@@ -42,7 +38,7 @@ private:
 
 	bool GetLookDirection(FVector2D& ScreenLocation, FVector& LookDirection) const;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere) 
 	float CrossHairXLocation = 0.5f;
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.3333f;

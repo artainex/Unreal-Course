@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -12,15 +11,9 @@
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (ensure(AimingComponent))
-	{
-		FoundAimingComponent(AimingComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find aiming component at BeginPlay()"));
-	}
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
 
 	//auto ControlledTank = GetControlledTank();
 	//
@@ -41,14 +34,10 @@ void ATankPlayerController::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("Player Controller ticking"));
 }
 
-ATank * ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>( GetPawn() );
-}
-
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank()) { return;	}
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!AimingComponent) { return;	}
 
 	FVector HitLocation; // Out parameter
 
@@ -56,7 +45,7 @@ void ATankPlayerController::AimTowardsCrossHair()
 	// if it hits the landscape
 	if (GetSightRayHitLocation(HitLocation)) // Has "side-effect", is going to line trace
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 		// Tell controlled tank to aim this point
 	}
 }

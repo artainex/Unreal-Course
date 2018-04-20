@@ -9,6 +9,7 @@
 // Forward Declaration
 class UTankBarrel; 
 class UTankTurret;
+class AProjectile;
 
 // Enum for aiming state
 UENUM()
@@ -33,7 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
 
-	void AimAt(FVector HitLocation, float LaunchSpeed);
+	void AimAt(FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	void Fire();
 
 protected:
 	// Called when the game starts
@@ -46,8 +50,19 @@ private:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
+	void MoveBarrel(FVector AimDirection);
+
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
-	void MoveBarrel(FVector AimDirection);
+	UPROPERTY(EditDefaultsOnly, Category = Firing) // Can be editted only in Blueprint
+	float LaunchSpeed = 4000; // 40 m/s
+
+	UPROPERTY(EditAnywhere, Category = Setup) // Can be editted anywhere
+											  //UClass* ProjectileBlueprint;	// Alternative http://api.unrealengine.com/KOR/Programming/UnrealArchitecture/TSubclassOf/
+	TSubclassOf<AProjectile> ProjectileBluePrint;
+
+	float ReloadTimeInSeconds = 3.f;
+
+	double LastFireTime = 0.0;
 };
